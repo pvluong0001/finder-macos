@@ -1,3 +1,52 @@
-.dev {
-  color: red;
+.finder-container {
+  display: flex;
+  border: 1px dotted #c2c2c2;
+  border-right: 0;
+  overflow-x: auto;
+
+  .finder-column {
+    min-width: 250px;
+    border-right: 1px dotted #c2c2c2;
+
+    .finder-cell-item {
+      padding: 10px 20px;
+      border-bottom: 1px dotted #c2c2c2;
+      cursor: pointer;
+      display: flex;
+      font-weight: normal;
+      align-items: stretch;
+
+      .arrow {
+        display: inline-block;
+        border-right: 3px solid black;
+        border-bottom: 3px solid black;
+        width: 6px;
+        height: 6px;
+        transform: rotate(-45deg);
+      }
+
+      div {
+        flex: 1;
+        padding-left: 10px;
+      }
+
+      span {
+        align-self: center;
+      }
+
+      &.active {
+        background: #1a79d0;
+        color: #fff;
+
+        .arrow {
+          border-right: 3px solid #fff;
+          border-bottom: 3px solid #fff;
+        }
+      }
+    }
+  }
+
+  .finder-column-hidden {
+    display: none;
+  }
 }
