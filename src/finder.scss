@@ -1,11 +1,9 @@
 .finder-container {
   display: flex;
   border: 1px dotted #c2c2c2;
-  border-right: 0;
   overflow-x: auto;
 
   .finder-column {
-    min-width: 250px;
     border-right: 1px dotted #c2c2c2;
 
     .finder-cell-item {
@@ -15,6 +13,7 @@
       display: flex;
       font-weight: normal;
       align-items: stretch;
+      min-height: 41px;
 
       .arrow {
         display: inline-block;

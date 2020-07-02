@@ -1,16 +1,21 @@
 module.exports = (function() {
   let container;
+  let detail;
   let options = {};
   const baseConfig = {
     recursiveAll: false,
-    suffixClass: ''
+    suffixClass: '',
+    columnWidth: '250px'
   };
   const init = function(element, initOptions = {}) {
+    /** create list container */
     container = element;
     container.classList.add('finder-container');
     if (initOptions.containerClass) {
       container.classList.add(initOptions.containerClass);
     }
+
+    /** create detail element */
 
     options = {
       ...baseConfig,
@@ -115,6 +120,8 @@ module.exports = (function() {
   function __createColumn(id, visible = false) {
     var node = document.createElement('div');
     node.id = id;
+    node.style.width = options.columnWidth;
+    node.style.minWidth = options.columnWidth;
     node.classList.add('finder-column');
     if (!visible) {
       node.classList.add('finder-column-hidden');

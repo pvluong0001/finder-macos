@@ -6,8 +6,9 @@ module.exports = {
   output: {
     path: resolve(__dirname, 'dist'),
     filename: 'finder.js',
-    libraryTarget: 'umd',
-    globalObject: 'this',
+    library: 'finder',
+    // globalObject: 'this',
+    // libraryTarget: 'umd',
   },
   optimization: {
     minimize: true,

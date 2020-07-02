@@ -4,24 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style href="./finder.css"></style>
+  <link rel="stylesheet" href="finder.css">
+  <style>
+    .counter-number {
+    background-color: #9da8c8;
+    color: #fff;
+    display: inline-block;
+    top: 8px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 50%;
+    content: attr(data-counter);
+    text-align: center;
+    margin-right: 5px;
+  }
+
+  .finder-cell-item.active .counter-number {
+    color: #fff;
+  }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="test"></div>
 
   <script src='finder.js'></script>
   <script>
-    const container = document.getElementById('app');
-    console.log(finder)
+    const container = document.getElementById('test');
 
     finder.init(container)
 
     finder.setBaseData([
       {
-        label: 'Something'
+        label: 'Something',
+        children: [
+          {
+            label: '123'
+          },
+          {
+            label: '123123231213'
+          }
+        ]
       },
       {
-        label: 'Good'
+        label: 'Good',
+        type: 'file'
       }
     ])
   </script>
