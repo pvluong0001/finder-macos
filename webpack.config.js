@@ -5,7 +5,9 @@ module.exports = {
   entry: resolve(__dirname, 'src/index.js'),
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'finder.js'
+    filename: 'finder.js',
+    libraryTarget: 'umd',
+    globalObject: 'this',
   },
   optimization: {
     minimize: true,

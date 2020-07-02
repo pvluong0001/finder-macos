@@ -1,1 +1,1 @@
-module.exports = require('./dist/finder.js')
+module.exports = require('./src/index.js')
