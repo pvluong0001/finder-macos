@@ -1,6 +1,6 @@
 {
   "name": "lit-finder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Finder MacOS",
   "main": "index.js",
   "scripts": {
