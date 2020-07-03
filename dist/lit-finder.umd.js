@@ -4174,40 +4174,6 @@ module.exports = function (name) {
 
 /***/ }),
 
-/***/ "b635":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _Finder_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("e2a7");
-
-
-function install(Vue) {
-  if (install.installed) return;
-  install.installed = true;
-  Vue.component("l-finder", _Finder_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-}
-
-var plugin = {
-  install: install
-};
-var GlobalVue = null;
-
-if (typeof window !== "undefined") {
-  GlobalVue = window.Vue;
-} else if (typeof global !== "undefined") {
-  GlobalVue = global.vue;
-}
-
-if (GlobalVue) {
-  GlobalVue.use(plugin);
-}
-
-_Finder_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].install = install;
-/* harmony default export */ __webpack_exports__["a"] = (_Finder_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
-
-/***/ }),
-
 /***/ "b64b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5060,10 +5026,456 @@ addToUnscopables('entries');
 
 /***/ }),
 
-/***/ "e2a7":
+/***/ "e2cc":
+/***/ (function(module, exports, __webpack_require__) {
+
+var redefine = __webpack_require__("6eeb");
+
+module.exports = function (target, src, options) {
+  for (var key in src) redefine(target, key, src[key], options);
+  return target;
+};
+
+
+/***/ }),
+
+/***/ "e439":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var fails = __webpack_require__("d039");
+var toIndexedObject = __webpack_require__("fc6a");
+var nativeGetOwnPropertyDescriptor = __webpack_require__("06cf").f;
+var DESCRIPTORS = __webpack_require__("83ab");
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeGetOwnPropertyDescriptor(1); });
+var FORCED = !DESCRIPTORS || FAILS_ON_PRIMITIVES;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
+$({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
+    return nativeGetOwnPropertyDescriptor(toIndexedObject(it), key);
+  }
+});
+
+
+/***/ }),
+
+/***/ "e4f5":
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "e538":
+/***/ (function(module, exports, __webpack_require__) {
+
+var wellKnownSymbol = __webpack_require__("b622");
+
+exports.f = wellKnownSymbol;
+
+
+/***/ }),
+
+/***/ "e58c":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var toIndexedObject = __webpack_require__("fc6a");
+var toInteger = __webpack_require__("a691");
+var toLength = __webpack_require__("50c4");
+var arrayMethodIsStrict = __webpack_require__("a640");
+var arrayMethodUsesToLength = __webpack_require__("ae40");
+
+var min = Math.min;
+var nativeLastIndexOf = [].lastIndexOf;
+var NEGATIVE_ZERO = !!nativeLastIndexOf && 1 / [1].lastIndexOf(1, -0) < 0;
+var STRICT_METHOD = arrayMethodIsStrict('lastIndexOf');
+// For preventing possible almost infinite loop in non-standard implementations, test the forward version of the method
+var USES_TO_LENGTH = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
+var FORCED = NEGATIVE_ZERO || !STRICT_METHOD || !USES_TO_LENGTH;
+
+// `Array.prototype.lastIndexOf` method implementation
+// https://tc39.github.io/ecma262/#sec-array.prototype.lastindexof
+module.exports = FORCED ? function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
+  // convert -0 to +0
+  if (NEGATIVE_ZERO) return nativeLastIndexOf.apply(this, arguments) || 0;
+  var O = toIndexedObject(this);
+  var length = toLength(O.length);
+  var index = length - 1;
+  if (arguments.length > 1) index = min(index, toInteger(arguments[1]));
+  if (index < 0) index = length + index;
+  for (;index >= 0; index--) if (index in O && O[index] === searchElement) return index || 0;
+  return -1;
+} : nativeLastIndexOf;
+
+
+/***/ }),
+
+/***/ "e893":
+/***/ (function(module, exports, __webpack_require__) {
+
+var has = __webpack_require__("5135");
+var ownKeys = __webpack_require__("56ef");
+var getOwnPropertyDescriptorModule = __webpack_require__("06cf");
+var definePropertyModule = __webpack_require__("9bf2");
+
+module.exports = function (target, source) {
+  var keys = ownKeys(source);
+  var defineProperty = definePropertyModule.f;
+  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!has(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+  }
+};
+
+
+/***/ }),
+
+/***/ "e8b5":
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__("c6b6");
+
+// `IsArray` abstract operation
+// https://tc39.github.io/ecma262/#sec-isarray
+module.exports = Array.isArray || function isArray(arg) {
+  return classof(arg) == 'Array';
+};
+
+
+/***/ }),
+
+/***/ "e91f":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ArrayBufferViewCore = __webpack_require__("ebb5");
+var $indexOf = __webpack_require__("4d64").indexOf;
+
+var aTypedArray = ArrayBufferViewCore.aTypedArray;
+var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
+
+// `%TypedArray%.prototype.indexOf` method
+// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.indexof
+exportTypedArrayMethod('indexOf', function indexOf(searchElement /* , fromIndex */) {
+  return $indexOf(aTypedArray(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
+});
+
+
+/***/ }),
+
+/***/ "e95a":
+/***/ (function(module, exports, __webpack_require__) {
+
+var wellKnownSymbol = __webpack_require__("b622");
+var Iterators = __webpack_require__("3f8c");
+
+var ITERATOR = wellKnownSymbol('iterator');
+var ArrayPrototype = Array.prototype;
+
+// check on default Array iterator
+module.exports = function (it) {
+  return it !== undefined && (Iterators.Array === it || ArrayPrototype[ITERATOR] === it);
+};
+
+
+/***/ }),
+
+/***/ "ebb5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var NATIVE_ARRAY_BUFFER = __webpack_require__("a981");
+var DESCRIPTORS = __webpack_require__("83ab");
+var global = __webpack_require__("da84");
+var isObject = __webpack_require__("861d");
+var has = __webpack_require__("5135");
+var classof = __webpack_require__("f5df");
+var createNonEnumerableProperty = __webpack_require__("9112");
+var redefine = __webpack_require__("6eeb");
+var defineProperty = __webpack_require__("9bf2").f;
+var getPrototypeOf = __webpack_require__("e163");
+var setPrototypeOf = __webpack_require__("d2bb");
+var wellKnownSymbol = __webpack_require__("b622");
+var uid = __webpack_require__("90e3");
+
+var Int8Array = global.Int8Array;
+var Int8ArrayPrototype = Int8Array && Int8Array.prototype;
+var Uint8ClampedArray = global.Uint8ClampedArray;
+var Uint8ClampedArrayPrototype = Uint8ClampedArray && Uint8ClampedArray.prototype;
+var TypedArray = Int8Array && getPrototypeOf(Int8Array);
+var TypedArrayPrototype = Int8ArrayPrototype && getPrototypeOf(Int8ArrayPrototype);
+var ObjectPrototype = Object.prototype;
+var isPrototypeOf = ObjectPrototype.isPrototypeOf;
+
+var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+var TYPED_ARRAY_TAG = uid('TYPED_ARRAY_TAG');
+// Fixing native typed arrays in Opera Presto crashes the browser, see #595
+var NATIVE_ARRAY_BUFFER_VIEWS = NATIVE_ARRAY_BUFFER && !!setPrototypeOf && classof(global.opera) !== 'Opera';
+var TYPED_ARRAY_TAG_REQIRED = false;
+var NAME;
+
+var TypedArrayConstructorsList = {
+  Int8Array: 1,
+  Uint8Array: 1,
+  Uint8ClampedArray: 1,
+  Int16Array: 2,
+  Uint16Array: 2,
+  Int32Array: 4,
+  Uint32Array: 4,
+  Float32Array: 4,
+  Float64Array: 8
+};
+
+var isView = function isView(it) {
+  var klass = classof(it);
+  return klass === 'DataView' || has(TypedArrayConstructorsList, klass);
+};
+
+var isTypedArray = function (it) {
+  return isObject(it) && has(TypedArrayConstructorsList, classof(it));
+};
+
+var aTypedArray = function (it) {
+  if (isTypedArray(it)) return it;
+  throw TypeError('Target is not a typed array');
+};
+
+var aTypedArrayConstructor = function (C) {
+  if (setPrototypeOf) {
+    if (isPrototypeOf.call(TypedArray, C)) return C;
+  } else for (var ARRAY in TypedArrayConstructorsList) if (has(TypedArrayConstructorsList, NAME)) {
+    var TypedArrayConstructor = global[ARRAY];
+    if (TypedArrayConstructor && (C === TypedArrayConstructor || isPrototypeOf.call(TypedArrayConstructor, C))) {
+      return C;
+    }
+  } throw TypeError('Target is not a typed array constructor');
+};
+
+var exportTypedArrayMethod = function (KEY, property, forced) {
+  if (!DESCRIPTORS) return;
+  if (forced) for (var ARRAY in TypedArrayConstructorsList) {
+    var TypedArrayConstructor = global[ARRAY];
+    if (TypedArrayConstructor && has(TypedArrayConstructor.prototype, KEY)) {
+      delete TypedArrayConstructor.prototype[KEY];
+    }
+  }
+  if (!TypedArrayPrototype[KEY] || forced) {
+    redefine(TypedArrayPrototype, KEY, forced ? property
+      : NATIVE_ARRAY_BUFFER_VIEWS && Int8ArrayPrototype[KEY] || property);
+  }
+};
+
+var exportTypedArrayStaticMethod = function (KEY, property, forced) {
+  var ARRAY, TypedArrayConstructor;
+  if (!DESCRIPTORS) return;
+  if (setPrototypeOf) {
+    if (forced) for (ARRAY in TypedArrayConstructorsList) {
+      TypedArrayConstructor = global[ARRAY];
+      if (TypedArrayConstructor && has(TypedArrayConstructor, KEY)) {
+        delete TypedArrayConstructor[KEY];
+      }
+    }
+    if (!TypedArray[KEY] || forced) {
+      // V8 ~ Chrome 49-50 `%TypedArray%` methods are non-writable non-configurable
+      try {
+        return redefine(TypedArray, KEY, forced ? property : NATIVE_ARRAY_BUFFER_VIEWS && Int8Array[KEY] || property);
+      } catch (error) { /* empty */ }
+    } else return;
+  }
+  for (ARRAY in TypedArrayConstructorsList) {
+    TypedArrayConstructor = global[ARRAY];
+    if (TypedArrayConstructor && (!TypedArrayConstructor[KEY] || forced)) {
+      redefine(TypedArrayConstructor, KEY, property);
+    }
+  }
+};
+
+for (NAME in TypedArrayConstructorsList) {
+  if (!global[NAME]) NATIVE_ARRAY_BUFFER_VIEWS = false;
+}
+
+// WebKit bug - typed arrays constructors prototype is Object.prototype
+if (!NATIVE_ARRAY_BUFFER_VIEWS || typeof TypedArray != 'function' || TypedArray === Function.prototype) {
+  // eslint-disable-next-line no-shadow
+  TypedArray = function TypedArray() {
+    throw TypeError('Incorrect invocation');
+  };
+  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
+    if (global[NAME]) setPrototypeOf(global[NAME], TypedArray);
+  }
+}
+
+if (!NATIVE_ARRAY_BUFFER_VIEWS || !TypedArrayPrototype || TypedArrayPrototype === ObjectPrototype) {
+  TypedArrayPrototype = TypedArray.prototype;
+  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
+    if (global[NAME]) setPrototypeOf(global[NAME].prototype, TypedArrayPrototype);
+  }
+}
+
+// WebKit bug - one more object in Uint8ClampedArray prototype chain
+if (NATIVE_ARRAY_BUFFER_VIEWS && getPrototypeOf(Uint8ClampedArrayPrototype) !== TypedArrayPrototype) {
+  setPrototypeOf(Uint8ClampedArrayPrototype, TypedArrayPrototype);
+}
+
+if (DESCRIPTORS && !has(TypedArrayPrototype, TO_STRING_TAG)) {
+  TYPED_ARRAY_TAG_REQIRED = true;
+  defineProperty(TypedArrayPrototype, TO_STRING_TAG, { get: function () {
+    return isObject(this) ? this[TYPED_ARRAY_TAG] : undefined;
+  } });
+  for (NAME in TypedArrayConstructorsList) if (global[NAME]) {
+    createNonEnumerableProperty(global[NAME], TYPED_ARRAY_TAG, NAME);
+  }
+}
+
+module.exports = {
+  NATIVE_ARRAY_BUFFER_VIEWS: NATIVE_ARRAY_BUFFER_VIEWS,
+  TYPED_ARRAY_TAG: TYPED_ARRAY_TAG_REQIRED && TYPED_ARRAY_TAG,
+  aTypedArray: aTypedArray,
+  aTypedArrayConstructor: aTypedArrayConstructor,
+  exportTypedArrayMethod: exportTypedArrayMethod,
+  exportTypedArrayStaticMethod: exportTypedArrayStaticMethod,
+  isView: isView,
+  isTypedArray: isTypedArray,
+  TypedArray: TypedArray,
+  TypedArrayPrototype: TypedArrayPrototype
+};
+
+
+/***/ }),
+
+/***/ "ebf8":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("e4f5");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__("499e").default
+var update = add("7535c61e", content, true, {"sourceMap":false,"shadowMode":false});
+
+/***/ }),
+
+/***/ "f23f":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ebf8");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "f5df":
+/***/ (function(module, exports, __webpack_require__) {
+
+var TO_STRING_TAG_SUPPORT = __webpack_require__("00ee");
+var classofRaw = __webpack_require__("c6b6");
+var wellKnownSymbol = __webpack_require__("b622");
+
+var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+// ES3 wrong here
+var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
+
+// fallback for IE11 Script Access Denied error
+var tryGet = function (it, key) {
+  try {
+    return it[key];
+  } catch (error) { /* empty */ }
+};
+
+// getting tag from ES6+ `Object.prototype.toString`
+module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
+  var O, tag, result;
+  return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG)) == 'string' ? tag
+    // builtinTag case
+    : CORRECT_ARGUMENTS ? classofRaw(O)
+    // ES3 arguments fallback
+    : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
+};
+
+
+/***/ }),
+
+/***/ "f772":
+/***/ (function(module, exports, __webpack_require__) {
+
+var shared = __webpack_require__("5692");
+var uid = __webpack_require__("90e3");
+
+var keys = shared('keys');
+
+module.exports = function (key) {
+  return keys[key] || (keys[key] = uid(key));
+};
+
+
+/***/ }),
+
+/***/ "f8cd":
+/***/ (function(module, exports, __webpack_require__) {
+
+var toInteger = __webpack_require__("a691");
+
+module.exports = function (it) {
+  var result = toInteger(it);
+  if (result < 0) throw RangeError("The argument can't be less than 0");
+  return result;
+};
+
+
+/***/ }),
+
+/***/ "fb15":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+// This file is imported into lib/wc client bundles.
+
+if (typeof window !== 'undefined') {
+  var currentScript = window.document.currentScript
+  if (true) {
+    var getCurrentScript = __webpack_require__("8875")
+    currentScript = getCurrentScript()
+
+    // for backward compatibility, because previously we directly included the polyfill
+    if (!('currentScript' in document)) {
+      Object.defineProperty(document, 'currentScript', { get: getCurrentScript })
+    }
+  }
+
+  var src = currentScript && currentScript.src.match(/(.+\/)[^/]+\.js(\?.*)?$/)
+  if (src) {
+    __webpack_require__.p = src[1] // eslint-disable-line
+  }
+}
+
+// Indicate to webpack that this file can be concatenated
+/* harmony default export */ var setPublicPath = (null);
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=4d066e86&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"finder-wrapper"},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[_vm._t("finder-file-detail",null,{"data":_vm.currentFileData})],2)])}
@@ -5625,468 +6037,14 @@ var component = normalizeComponent(
   
 )
 
-/* harmony default export */ var Finder = __webpack_exports__["a"] = (component.exports);
+/* harmony default export */ var Finder = (component.exports);
+// CONCATENATED MODULE: ./src/index.js
 
-/***/ }),
-
-/***/ "e2cc":
-/***/ (function(module, exports, __webpack_require__) {
-
-var redefine = __webpack_require__("6eeb");
-
-module.exports = function (target, src, options) {
-  for (var key in src) redefine(target, key, src[key], options);
-  return target;
-};
-
-
-/***/ }),
-
-/***/ "e439":
-/***/ (function(module, exports, __webpack_require__) {
-
-var $ = __webpack_require__("23e7");
-var fails = __webpack_require__("d039");
-var toIndexedObject = __webpack_require__("fc6a");
-var nativeGetOwnPropertyDescriptor = __webpack_require__("06cf").f;
-var DESCRIPTORS = __webpack_require__("83ab");
-
-var FAILS_ON_PRIMITIVES = fails(function () { nativeGetOwnPropertyDescriptor(1); });
-var FORCED = !DESCRIPTORS || FAILS_ON_PRIMITIVES;
-
-// `Object.getOwnPropertyDescriptor` method
-// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
-$({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
-  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
-    return nativeGetOwnPropertyDescriptor(toIndexedObject(it), key);
-  }
-});
-
-
-/***/ }),
-
-/***/ "e4f5":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ "e538":
-/***/ (function(module, exports, __webpack_require__) {
-
-var wellKnownSymbol = __webpack_require__("b622");
-
-exports.f = wellKnownSymbol;
-
-
-/***/ }),
-
-/***/ "e58c":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var toIndexedObject = __webpack_require__("fc6a");
-var toInteger = __webpack_require__("a691");
-var toLength = __webpack_require__("50c4");
-var arrayMethodIsStrict = __webpack_require__("a640");
-var arrayMethodUsesToLength = __webpack_require__("ae40");
-
-var min = Math.min;
-var nativeLastIndexOf = [].lastIndexOf;
-var NEGATIVE_ZERO = !!nativeLastIndexOf && 1 / [1].lastIndexOf(1, -0) < 0;
-var STRICT_METHOD = arrayMethodIsStrict('lastIndexOf');
-// For preventing possible almost infinite loop in non-standard implementations, test the forward version of the method
-var USES_TO_LENGTH = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
-var FORCED = NEGATIVE_ZERO || !STRICT_METHOD || !USES_TO_LENGTH;
-
-// `Array.prototype.lastIndexOf` method implementation
-// https://tc39.github.io/ecma262/#sec-array.prototype.lastindexof
-module.exports = FORCED ? function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
-  // convert -0 to +0
-  if (NEGATIVE_ZERO) return nativeLastIndexOf.apply(this, arguments) || 0;
-  var O = toIndexedObject(this);
-  var length = toLength(O.length);
-  var index = length - 1;
-  if (arguments.length > 1) index = min(index, toInteger(arguments[1]));
-  if (index < 0) index = length + index;
-  for (;index >= 0; index--) if (index in O && O[index] === searchElement) return index || 0;
-  return -1;
-} : nativeLastIndexOf;
-
-
-/***/ }),
-
-/***/ "e893":
-/***/ (function(module, exports, __webpack_require__) {
-
-var has = __webpack_require__("5135");
-var ownKeys = __webpack_require__("56ef");
-var getOwnPropertyDescriptorModule = __webpack_require__("06cf");
-var definePropertyModule = __webpack_require__("9bf2");
-
-module.exports = function (target, source) {
-  var keys = ownKeys(source);
-  var defineProperty = definePropertyModule.f;
-  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    if (!has(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
-  }
-};
-
-
-/***/ }),
-
-/***/ "e8b5":
-/***/ (function(module, exports, __webpack_require__) {
-
-var classof = __webpack_require__("c6b6");
-
-// `IsArray` abstract operation
-// https://tc39.github.io/ecma262/#sec-isarray
-module.exports = Array.isArray || function isArray(arg) {
-  return classof(arg) == 'Array';
-};
-
-
-/***/ }),
-
-/***/ "e91f":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ArrayBufferViewCore = __webpack_require__("ebb5");
-var $indexOf = __webpack_require__("4d64").indexOf;
-
-var aTypedArray = ArrayBufferViewCore.aTypedArray;
-var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
-
-// `%TypedArray%.prototype.indexOf` method
-// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.indexof
-exportTypedArrayMethod('indexOf', function indexOf(searchElement /* , fromIndex */) {
-  return $indexOf(aTypedArray(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
-});
-
-
-/***/ }),
-
-/***/ "e95a":
-/***/ (function(module, exports, __webpack_require__) {
-
-var wellKnownSymbol = __webpack_require__("b622");
-var Iterators = __webpack_require__("3f8c");
-
-var ITERATOR = wellKnownSymbol('iterator');
-var ArrayPrototype = Array.prototype;
-
-// check on default Array iterator
-module.exports = function (it) {
-  return it !== undefined && (Iterators.Array === it || ArrayPrototype[ITERATOR] === it);
-};
-
-
-/***/ }),
-
-/***/ "ebb5":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var NATIVE_ARRAY_BUFFER = __webpack_require__("a981");
-var DESCRIPTORS = __webpack_require__("83ab");
-var global = __webpack_require__("da84");
-var isObject = __webpack_require__("861d");
-var has = __webpack_require__("5135");
-var classof = __webpack_require__("f5df");
-var createNonEnumerableProperty = __webpack_require__("9112");
-var redefine = __webpack_require__("6eeb");
-var defineProperty = __webpack_require__("9bf2").f;
-var getPrototypeOf = __webpack_require__("e163");
-var setPrototypeOf = __webpack_require__("d2bb");
-var wellKnownSymbol = __webpack_require__("b622");
-var uid = __webpack_require__("90e3");
-
-var Int8Array = global.Int8Array;
-var Int8ArrayPrototype = Int8Array && Int8Array.prototype;
-var Uint8ClampedArray = global.Uint8ClampedArray;
-var Uint8ClampedArrayPrototype = Uint8ClampedArray && Uint8ClampedArray.prototype;
-var TypedArray = Int8Array && getPrototypeOf(Int8Array);
-var TypedArrayPrototype = Int8ArrayPrototype && getPrototypeOf(Int8ArrayPrototype);
-var ObjectPrototype = Object.prototype;
-var isPrototypeOf = ObjectPrototype.isPrototypeOf;
-
-var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-var TYPED_ARRAY_TAG = uid('TYPED_ARRAY_TAG');
-// Fixing native typed arrays in Opera Presto crashes the browser, see #595
-var NATIVE_ARRAY_BUFFER_VIEWS = NATIVE_ARRAY_BUFFER && !!setPrototypeOf && classof(global.opera) !== 'Opera';
-var TYPED_ARRAY_TAG_REQIRED = false;
-var NAME;
-
-var TypedArrayConstructorsList = {
-  Int8Array: 1,
-  Uint8Array: 1,
-  Uint8ClampedArray: 1,
-  Int16Array: 2,
-  Uint16Array: 2,
-  Int32Array: 4,
-  Uint32Array: 4,
-  Float32Array: 4,
-  Float64Array: 8
-};
-
-var isView = function isView(it) {
-  var klass = classof(it);
-  return klass === 'DataView' || has(TypedArrayConstructorsList, klass);
-};
-
-var isTypedArray = function (it) {
-  return isObject(it) && has(TypedArrayConstructorsList, classof(it));
-};
-
-var aTypedArray = function (it) {
-  if (isTypedArray(it)) return it;
-  throw TypeError('Target is not a typed array');
-};
-
-var aTypedArrayConstructor = function (C) {
-  if (setPrototypeOf) {
-    if (isPrototypeOf.call(TypedArray, C)) return C;
-  } else for (var ARRAY in TypedArrayConstructorsList) if (has(TypedArrayConstructorsList, NAME)) {
-    var TypedArrayConstructor = global[ARRAY];
-    if (TypedArrayConstructor && (C === TypedArrayConstructor || isPrototypeOf.call(TypedArrayConstructor, C))) {
-      return C;
-    }
-  } throw TypeError('Target is not a typed array constructor');
-};
-
-var exportTypedArrayMethod = function (KEY, property, forced) {
-  if (!DESCRIPTORS) return;
-  if (forced) for (var ARRAY in TypedArrayConstructorsList) {
-    var TypedArrayConstructor = global[ARRAY];
-    if (TypedArrayConstructor && has(TypedArrayConstructor.prototype, KEY)) {
-      delete TypedArrayConstructor.prototype[KEY];
-    }
-  }
-  if (!TypedArrayPrototype[KEY] || forced) {
-    redefine(TypedArrayPrototype, KEY, forced ? property
-      : NATIVE_ARRAY_BUFFER_VIEWS && Int8ArrayPrototype[KEY] || property);
-  }
-};
-
-var exportTypedArrayStaticMethod = function (KEY, property, forced) {
-  var ARRAY, TypedArrayConstructor;
-  if (!DESCRIPTORS) return;
-  if (setPrototypeOf) {
-    if (forced) for (ARRAY in TypedArrayConstructorsList) {
-      TypedArrayConstructor = global[ARRAY];
-      if (TypedArrayConstructor && has(TypedArrayConstructor, KEY)) {
-        delete TypedArrayConstructor[KEY];
-      }
-    }
-    if (!TypedArray[KEY] || forced) {
-      // V8 ~ Chrome 49-50 `%TypedArray%` methods are non-writable non-configurable
-      try {
-        return redefine(TypedArray, KEY, forced ? property : NATIVE_ARRAY_BUFFER_VIEWS && Int8Array[KEY] || property);
-      } catch (error) { /* empty */ }
-    } else return;
-  }
-  for (ARRAY in TypedArrayConstructorsList) {
-    TypedArrayConstructor = global[ARRAY];
-    if (TypedArrayConstructor && (!TypedArrayConstructor[KEY] || forced)) {
-      redefine(TypedArrayConstructor, KEY, property);
-    }
-  }
-};
-
-for (NAME in TypedArrayConstructorsList) {
-  if (!global[NAME]) NATIVE_ARRAY_BUFFER_VIEWS = false;
-}
-
-// WebKit bug - typed arrays constructors prototype is Object.prototype
-if (!NATIVE_ARRAY_BUFFER_VIEWS || typeof TypedArray != 'function' || TypedArray === Function.prototype) {
-  // eslint-disable-next-line no-shadow
-  TypedArray = function TypedArray() {
-    throw TypeError('Incorrect invocation');
-  };
-  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
-    if (global[NAME]) setPrototypeOf(global[NAME], TypedArray);
-  }
-}
-
-if (!NATIVE_ARRAY_BUFFER_VIEWS || !TypedArrayPrototype || TypedArrayPrototype === ObjectPrototype) {
-  TypedArrayPrototype = TypedArray.prototype;
-  if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
-    if (global[NAME]) setPrototypeOf(global[NAME].prototype, TypedArrayPrototype);
-  }
-}
-
-// WebKit bug - one more object in Uint8ClampedArray prototype chain
-if (NATIVE_ARRAY_BUFFER_VIEWS && getPrototypeOf(Uint8ClampedArrayPrototype) !== TypedArrayPrototype) {
-  setPrototypeOf(Uint8ClampedArrayPrototype, TypedArrayPrototype);
-}
-
-if (DESCRIPTORS && !has(TypedArrayPrototype, TO_STRING_TAG)) {
-  TYPED_ARRAY_TAG_REQIRED = true;
-  defineProperty(TypedArrayPrototype, TO_STRING_TAG, { get: function () {
-    return isObject(this) ? this[TYPED_ARRAY_TAG] : undefined;
-  } });
-  for (NAME in TypedArrayConstructorsList) if (global[NAME]) {
-    createNonEnumerableProperty(global[NAME], TYPED_ARRAY_TAG, NAME);
-  }
-}
-
-module.exports = {
-  NATIVE_ARRAY_BUFFER_VIEWS: NATIVE_ARRAY_BUFFER_VIEWS,
-  TYPED_ARRAY_TAG: TYPED_ARRAY_TAG_REQIRED && TYPED_ARRAY_TAG,
-  aTypedArray: aTypedArray,
-  aTypedArrayConstructor: aTypedArrayConstructor,
-  exportTypedArrayMethod: exportTypedArrayMethod,
-  exportTypedArrayStaticMethod: exportTypedArrayStaticMethod,
-  isView: isView,
-  isTypedArray: isTypedArray,
-  TypedArray: TypedArray,
-  TypedArrayPrototype: TypedArrayPrototype
-};
-
-
-/***/ }),
-
-/***/ "ebf8":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("e4f5");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__("499e").default
-var update = add("7535c61e", content, true, {"sourceMap":false,"shadowMode":false});
-
-/***/ }),
-
-/***/ "f23f":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ebf8");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Finder_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "f5df":
-/***/ (function(module, exports, __webpack_require__) {
-
-var TO_STRING_TAG_SUPPORT = __webpack_require__("00ee");
-var classofRaw = __webpack_require__("c6b6");
-var wellKnownSymbol = __webpack_require__("b622");
-
-var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-// ES3 wrong here
-var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (error) { /* empty */ }
-};
-
-// getting tag from ES6+ `Object.prototype.toString`
-module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
-  var O, tag, result;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG)) == 'string' ? tag
-    // builtinTag case
-    : CORRECT_ARGUMENTS ? classofRaw(O)
-    // ES3 arguments fallback
-    : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
-};
-
-
-/***/ }),
-
-/***/ "f772":
-/***/ (function(module, exports, __webpack_require__) {
-
-var shared = __webpack_require__("5692");
-var uid = __webpack_require__("90e3");
-
-var keys = shared('keys');
-
-module.exports = function (key) {
-  return keys[key] || (keys[key] = uid(key));
-};
-
-
-/***/ }),
-
-/***/ "f8cd":
-/***/ (function(module, exports, __webpack_require__) {
-
-var toInteger = __webpack_require__("a691");
-
-module.exports = function (it) {
-  var result = toInteger(it);
-  if (result < 0) throw RangeError("The argument can't be less than 0");
-  return result;
-};
-
-
-/***/ }),
-
-/***/ "fb15":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
-// This file is imported into lib/wc client bundles.
-
-if (typeof window !== 'undefined') {
-  var currentScript = window.document.currentScript
-  if (true) {
-    var getCurrentScript = __webpack_require__("8875")
-    currentScript = getCurrentScript()
-
-    // for backward compatibility, because previously we directly included the polyfill
-    if (!('currentScript' in document)) {
-      Object.defineProperty(document, 'currentScript', { get: getCurrentScript })
-    }
-  }
-
-  var src = currentScript && currentScript.src.match(/(.+\/)[^/]+\.js(\?.*)?$/)
-  if (src) {
-    __webpack_require__.p = src[1] // eslint-disable-line
-  }
-}
-
-// Indicate to webpack that this file can be concatenated
-/* harmony default export */ var setPublicPath = (null);
-
-// EXTERNAL MODULE: ./src/index.js
-var src_0 = __webpack_require__("b635");
-
+/* harmony default export */ var src_0 = (Finder);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (src_0["a" /* default */]);
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (src_0);
 
 
 
