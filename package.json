@@ -1,9 +1,11 @@
 {
   "name": "lit-finder",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "vuejs finder macos",
+  "main": "dist/lit-finder.common.js",
   "scripts": {
-    "build": "webpack --config config/webpack.config.js"
+    "build": "webpack --config config/webpack.config.js",
+    "build-package": "vue-cli-service build --target lib --name lit-finder ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,48 +21,19 @@
   },
   "homepage": "https://github.com/pvluong0001/finder-macos#readme",
   "dependencies": {
-    "core-js": "^3.3.2",
-    "vue": "^2.6.10"
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.0.0",
-    "@vue/cli-plugin-eslint": "^4.0.0",
-    "@vue/cli-service": "^4.0.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
-    "babel-preset-env": "^1.7.0",
-    "cross-env": "^6.0.3",
-    "css-loader": "^3.2.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "file-loader": "^4.2.0",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.2.1",
-    "vue-loader": "^15.7.1",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.9.0"
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^9.0.0",
+    "vue-template-compiler": "^2.6.11"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  }
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json"
+  ]
 }
