@@ -4,8 +4,7 @@
   "description": "vuejs finder macos",
   "main": "dist/lit-finder.common.js",
   "scripts": {
-    "build": "webpack --config config/webpack.config.js",
-    "build-package": "vue-cli-service build --target lib --name lit-finder ./src/index.js"
+    "build-package": "vue-cli-service build --target lib --name lit-finder ./src/index.js --mode production"
   },
   "repository": {
     "type": "git",

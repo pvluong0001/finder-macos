@@ -69,6 +69,7 @@ export default {
 | tree            | Array    | []      | Base data of finder. Array of node |
 | handleItemClick | Function | null    | Handle event when click on node    |
 | options         | Object   | {}      | Init finder options(detail below)  |
+| wrapperClass    | String   | ''      | Custom wrapper class               |
 
 ### Node properties
 | Key      | Type         | Default value |                                                          |
