@@ -64,7 +64,7 @@ export default (function() {
   }
 
   function __createCell(data, index) {
-    const {label, children, syncData = false, type, suffix} = data;
+    const {label, children, syncData = false, type, suffix, options} = data;
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
     let content = `<div>${label}</div>`;
@@ -110,7 +110,9 @@ export default (function() {
             __recursiveTree(data, true, false, ++index);
           });
         } else {
-          options.handleItemClick(data)
+          if(data.options) {
+            options.handleItemClick(data)
+          }
           if(data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
           }
