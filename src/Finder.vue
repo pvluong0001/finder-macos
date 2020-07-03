@@ -1,5 +1,5 @@
 <template>
-    <div class="finder-wrapper" :class="wrapperClass">
+    <div :class="`finder-wrapper ${options.wrapperClass}`">
         <div class="finder-root"></div>
         <div class="finder-detail-wrapper" :style="{width: showDetail ? '50%' : 0}" v-show="showDetail">
             <slot name="finder-file-detail" :data="currentFileData"></slot>
@@ -24,10 +24,6 @@
       options: {
         type: Object,
         default: () => ({})
-      },
-      wrapperClass: {
-        type: String,
-        default: ''
       }
     },
     data: () => ({

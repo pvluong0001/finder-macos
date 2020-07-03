@@ -69,13 +69,12 @@ export default {
 | tree            | Array    | []      | Base data of finder. Array of node |
 | handleItemClick | Function | null    | Handle event when click on node    |
 | options         | Object   | {}      | Init finder options(detail below)  |
-| wrapperClass    | String   | ''      | Custom wrapper class               |
 
 ### Node properties
 | Key      | Type         | Default value |                                                          |
 |----------|---------     |---------------|----------------------------------------------------------|
 | label    | String       | required      | Name of node                                             |
-| type     | String       | require       | folder|file: show node with type file or folder and css |
+| type     | String       | require       | folder,file: show node with type file or folder and css  |
 | children | Array        | []            | Children node                                            |
 | suffix   | String,Number| ''            | suffix content                                           |
 | syncData | Boolean      | false         | if true: define handleItemClick function to handle       |
@@ -87,3 +86,4 @@ export default {
 | suffixClass     | String   | ''            | Class of suffix content(When node have suffix options). |
 | handleItemClick | Function | null          | Handle event when click into node                       |
 | containerClass  | String   | ''            | Extra class of finder container                         |
+| wrapperClass    | String   | ''            | Custom wrapper class                                    |
