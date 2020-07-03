@@ -17,7 +17,14 @@
         type: Array,
         default: [],
       },
-      handleItemClick: Function
+      handleItemClick: {
+        type: Function,
+        default: () => null
+      },
+      options: {
+        type: Object,
+        default: () => ({})
+      }
     },
     data: () => ({
       showDetail: false,
@@ -25,8 +32,10 @@
     }),
     mounted() {
       const container = document.querySelector('.finder-root');
-      finder.init(container, {
-        handleItemClick: (node) => {
+      const initOptions = {...this.options};
+
+      if(this.handleItemClick) {
+        initOptions.handleItemClick = (node) => {
           this.showDetail = node.type === 'file';
           if(this.showDetail) {
             this.$nextTick().then(() => {
@@ -39,8 +48,10 @@
           }
 
           return this.handleItemClick(node);
-        },
-      });
+        }
+      }
+
+      finder.init(container, initOptions);
       finder.setBaseData(this.tree);
     },
   };
