@@ -1,6 +1,5 @@
 export default (function() {
   let container;
-  let detail;
   let options = {};
   const baseConfig = {
     recursiveAll: false,
@@ -64,7 +63,7 @@ export default (function() {
   }
 
   function __createCell(data, index) {
-    const {label, children, syncData = false, type, suffix, options} = data;
+    const {label, children, syncData = false, type, suffix} = data;
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
     let content = `<div>${label}</div>`;
