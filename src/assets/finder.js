@@ -109,7 +109,7 @@ export default (function() {
             __recursiveTree(data, true, false, ++index);
           });
         } else {
-          if(data.options) {
+          if(data.options || type === 'file') {
             options.handleItemClick(data)
           }
           if(data.children && data.children.length) {

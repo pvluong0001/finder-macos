@@ -5823,7 +5823,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
             __recursiveTree(data, true, false, ++index);
           });
         } else {
-          if (data.options) {
+          if (data.options || type === 'file') {
             options.handleItemClick(data);
           }
 
