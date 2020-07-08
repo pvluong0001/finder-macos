@@ -5468,12 +5468,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=a16b92f0&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[_vm._t("finder-file-detail",null,{"data":_vm.currentFileData})],2)])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=71c9958a&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[(_vm.currentFileData)?_vm._t("finder-file-detail",null,{"data":_vm.currentFileData}):_vm._e()],2)])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=a16b92f0&
+// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=71c9958a&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -5765,7 +5765,8 @@ var es_typed_array_to_string = __webpack_require__("72f7");
         _data$syncData = data.syncData,
         syncData = _data$syncData === void 0 ? false : _data$syncData,
         type = data.type,
-        suffix = data.suffix;
+        suffix = data.suffix,
+        options = data.options;
     var node = document.createElement('div');
     node.classList.add('finder-cell-item');
     var content = "<div>".concat(label, "</div>");
@@ -5815,7 +5816,9 @@ var es_typed_array_to_string = __webpack_require__("72f7");
             __recursiveTree(data, true, false, ++index);
           });
         } else {
-          options.handleItemClick(data);
+          if (data.options) {
+            options.handleItemClick(data);
+          }
 
           if (data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
@@ -5888,7 +5891,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
   data: function data() {
     return {
       showDetail: false,
-      currentFileData: {}
+      currentFileData: null
     };
   },
   mounted: function mounted() {
