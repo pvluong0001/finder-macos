@@ -2,7 +2,7 @@
     <div :class="`finder-wrapper ${options.wrapperClass}`">
         <div class="finder-root"></div>
         <div class="finder-detail-wrapper" :style="{width: showDetail ? '50%' : 0}" v-show="showDetail">
-            <slot name="finder-file-detail" :data="currentFileData"></slot>
+            <slot name="finder-file-detail" :data="currentFileData" v-if="currentFileData"></slot>
         </div>
     </div>
 </template>
@@ -28,7 +28,7 @@
     },
     data: () => ({
       showDetail: false,
-      currentFileData: {}
+      currentFileData: null
     }),
     mounted() {
       const container = document.querySelector('.finder-root');
