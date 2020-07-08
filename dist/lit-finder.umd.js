@@ -5701,7 +5701,6 @@ var es_typed_array_to_string = __webpack_require__("72f7");
 
 /* harmony default export */ var finder = ((function () {
   var container;
-  var detail;
   var options = {};
   var baseConfig = {
     recursiveAll: false,
@@ -5774,8 +5773,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
         _data$syncData = data.syncData,
         syncData = _data$syncData === void 0 ? false : _data$syncData,
         type = data.type,
-        suffix = data.suffix,
-        options = data.options;
+        suffix = data.suffix;
     var node = document.createElement('div');
     node.classList.add('finder-cell-item');
     var content = "<div>".concat(label, "</div>");

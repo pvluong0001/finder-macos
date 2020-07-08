@@ -1,6 +1,6 @@
 {
   "name": "lit-finder",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "vuejs finder macos",
   "main": "dist/lit-finder.common.js",
   "scripts": {
