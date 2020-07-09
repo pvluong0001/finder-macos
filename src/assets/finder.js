@@ -82,6 +82,9 @@ export default (function() {
 
     /** add event listener */
     node.addEventListener('click', () => {
+      /** disable event click */
+      node.style.pointerEvents = 'none';
+
       /** remove old active element */
       const currentActiveElement = node.parentNode.querySelector('.active');
       if (currentActiveElement) {
@@ -107,13 +110,21 @@ export default (function() {
         if (syncData) {
           options.handleItemClick(data).then((data) => {
             __recursiveTree(data, true, false, ++index);
+
+            /** enable event click */
+            node.style.pointerEvents = 'auto';
           });
         } else {
           if(data.options || type === 'file') {
-            options.handleItemClick(data)
+            options.handleItemClick(data).then(() => {
+              /** enable event click */
+              node.style.pointerEvents = 'auto';
+            })
           }
           if(data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
+            /** enable event click */
+            node.style.pointerEvents = 'auto';
           }
         }
 
@@ -123,6 +134,9 @@ export default (function() {
         if (children && children.length) {
           __recursiveTree(children, true, false, ++index);
         }
+
+        /** enable event click */
+        node.style.pointerEvents = 'auto';
       }
     });
 
