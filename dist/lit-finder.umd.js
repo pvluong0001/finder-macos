@@ -6539,6 +6539,10 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     });
   }
 
+  function isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  }
+
   function __createCell(data, index) {
     var label = data.label,
         children = data.children,
@@ -6609,10 +6613,17 @@ var es_typed_array_to_string = __webpack_require__("72f7");
 
           if (data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
-            /** enable event click */
 
-
-            node.style.pointerEvents = 'auto';
+            try {
+              if (isFunction(options.handleItemClick)) {
+                options.handleItemClick(data).finally(function () {
+                  node.style.pointerEvents = 'auto';
+                });
+              }
+            } catch (e) {
+              /** enable event click */
+              node.style.pointerEvents = 'auto';
+            }
           }
         } // options.handleItemClick()
         // __recursiveTree(children, true, false, ++index)

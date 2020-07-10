@@ -62,6 +62,10 @@ export default (function() {
     );
   }
 
+  function isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  }
+
   function __createCell(data, index) {
     const {label, children, syncData = false, type, suffix} = data;
     const node = document.createElement('div');
@@ -122,8 +126,16 @@ export default (function() {
           }
           if(data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
-            /** enable event click */
-            node.style.pointerEvents = 'auto';
+            try {
+              if(isFunction(options.handleItemClick)) {
+                options.handleItemClick(data).finally(() => {
+                  node.style.pointerEvents = 'auto';
+                })
+              }
+            } catch (e) {
+              /** enable event click */
+              node.style.pointerEvents = 'auto';
+            }
           }
         }
 
