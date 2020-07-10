@@ -110,14 +110,13 @@ export default (function() {
         if (syncData) {
           options.handleItemClick(data).then((data) => {
             __recursiveTree(data, true, false, ++index);
-
+          }).finally(() => {
             /** enable event click */
             node.style.pointerEvents = 'auto';
           });
         } else {
           if(data.options || type === 'file') {
-            options.handleItemClick(data).then(() => {
-              /** enable event click */
+            options.handleItemClick(data).finally(() => {
               node.style.pointerEvents = 'auto';
             })
           }
