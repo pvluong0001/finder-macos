@@ -77,7 +77,10 @@ export default (function() {
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
 
-    if(options.highlightFile && type === 'file') {
+    if(
+      (options.highlightFile && type === 'file') ||
+      (options.highlightFolder && type === 'folder')
+    ) {
       const regex = new RegExp(options.keyword);
       label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
     }

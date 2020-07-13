@@ -55,10 +55,8 @@
       finder.setBaseData(this.tree);
     },
     methods: {
-      reRender(data, keyword) {
-        finder.reRender(data, {
-          keyword
-        });
+      reRender(data, options) {
+        finder.reRender(data, options);
       }
     }
   };

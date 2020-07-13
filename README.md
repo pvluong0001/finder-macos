@@ -87,3 +87,58 @@ export default {
 | handleItemClick | Function | null          | Handle event when click into node                       |
 | containerClass  | String   | ''            | Extra class of finder container                         |
 | wrapperClass    | String   | ''            | Custom wrapper class                                    |
+
+### Actions
+##### Rerender
+```vue
+<template>
+    <finder
+        ...
+        ref="finder"
+    >
+    
+    </finder>
+</template>
+
+<script>
+export default {
+    // ...,
+    data: () => ({
+        keyword: ''
+    }),
+    methods: {
+        someHandle() {
+            // call something to get data
+            const data = [
+                {
+                    label: 'Parent 01',
+                    type: 'folder',
+                    children: [
+                        {label: 'Parent 01 - Child 1', syncData: true, type: 'folder'},
+                        {label: 'Parent 01 - Child 2', type: 'file'},
+                    ],
+                    suffix: 10
+                }
+            ]
+    
+            /** render with keyword */
+            this.$refs.finder.reRender(data, {
+                keyword: this.keyword,
+                noData: 'No data specific' // you can use node element instead string
+                // highlightFile: true,
+                // highlightFolder: false,
+            })
+        }
+    }
+}
+</script>
+```
+
+- Rerender options:
+
+| Key            | Type                 | Default value       | Explain                                                     |
+|----------------|----------------------|---------------------|-------------------------------------------------------------|
+| keyword        | String               | ''                  | highlight name file or folder match which match keyword     |
+| noData         | String, Node Element | 'No data specific!' | Show message no data when the finder have no data           |
+| highlightFile  | Boolean              | true                | default highlight word inside file name which match keyword |
+| highlighFolder | Boolean              | false               | highlight folder name like the way highlightFile works      |
