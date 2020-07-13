@@ -54,6 +54,13 @@
       finder.init(container, initOptions);
       finder.setBaseData(this.tree);
     },
+    methods: {
+      reRender(data, keyword) {
+        finder.reRender(data, {
+          keyword
+        });
+      }
+    }
   };
 </script>
 

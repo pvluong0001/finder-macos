@@ -1327,6 +1327,25 @@ module.exports = function (a, b) {
 
 /***/ }),
 
+/***/ "44e7":
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__("861d");
+var classof = __webpack_require__("c6b6");
+var wellKnownSymbol = __webpack_require__("b622");
+
+var MATCH = wellKnownSymbol('match');
+
+// `IsRegExp` abstract operation
+// https://tc39.github.io/ecma262/#sec-isregexp
+module.exports = function (it) {
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) == 'RegExp');
+};
+
+
+/***/ }),
+
 /***/ "4840":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1623,6 +1642,97 @@ function applyToTag (styleElement, obj) {
     styleElement.appendChild(document.createTextNode(css))
   }
 }
+
+
+/***/ }),
+
+/***/ "4d63":
+/***/ (function(module, exports, __webpack_require__) {
+
+var DESCRIPTORS = __webpack_require__("83ab");
+var global = __webpack_require__("da84");
+var isForced = __webpack_require__("94ca");
+var inheritIfRequired = __webpack_require__("7156");
+var defineProperty = __webpack_require__("9bf2").f;
+var getOwnPropertyNames = __webpack_require__("241c").f;
+var isRegExp = __webpack_require__("44e7");
+var getFlags = __webpack_require__("ad6d");
+var stickyHelpers = __webpack_require__("9f7f");
+var redefine = __webpack_require__("6eeb");
+var fails = __webpack_require__("d039");
+var setInternalState = __webpack_require__("69f3").set;
+var setSpecies = __webpack_require__("2626");
+var wellKnownSymbol = __webpack_require__("b622");
+
+var MATCH = wellKnownSymbol('match');
+var NativeRegExp = global.RegExp;
+var RegExpPrototype = NativeRegExp.prototype;
+var re1 = /a/g;
+var re2 = /a/g;
+
+// "new" should create a new object, old webkit bug
+var CORRECT_NEW = new NativeRegExp(re1) !== re1;
+
+var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y;
+
+var FORCED = DESCRIPTORS && isForced('RegExp', (!CORRECT_NEW || UNSUPPORTED_Y || fails(function () {
+  re2[MATCH] = false;
+  // RegExp constructor can alter flags and IsRegExp works correct with @@match
+  return NativeRegExp(re1) != re1 || NativeRegExp(re2) == re2 || NativeRegExp(re1, 'i') != '/a/i';
+})));
+
+// `RegExp` constructor
+// https://tc39.github.io/ecma262/#sec-regexp-constructor
+if (FORCED) {
+  var RegExpWrapper = function RegExp(pattern, flags) {
+    var thisIsRegExp = this instanceof RegExpWrapper;
+    var patternIsRegExp = isRegExp(pattern);
+    var flagsAreUndefined = flags === undefined;
+    var sticky;
+
+    if (!thisIsRegExp && patternIsRegExp && pattern.constructor === RegExpWrapper && flagsAreUndefined) {
+      return pattern;
+    }
+
+    if (CORRECT_NEW) {
+      if (patternIsRegExp && !flagsAreUndefined) pattern = pattern.source;
+    } else if (pattern instanceof RegExpWrapper) {
+      if (flagsAreUndefined) flags = getFlags.call(pattern);
+      pattern = pattern.source;
+    }
+
+    if (UNSUPPORTED_Y) {
+      sticky = !!flags && flags.indexOf('y') > -1;
+      if (sticky) flags = flags.replace(/y/g, '');
+    }
+
+    var result = inheritIfRequired(
+      CORRECT_NEW ? new NativeRegExp(pattern, flags) : NativeRegExp(pattern, flags),
+      thisIsRegExp ? this : RegExpPrototype,
+      RegExpWrapper
+    );
+
+    if (UNSUPPORTED_Y && sticky) setInternalState(result, { sticky: sticky });
+
+    return result;
+  };
+  var proxy = function (key) {
+    key in RegExpWrapper || defineProperty(RegExpWrapper, key, {
+      configurable: true,
+      get: function () { return NativeRegExp[key]; },
+      set: function (it) { NativeRegExp[key] = it; }
+    });
+  };
+  var keys = getOwnPropertyNames(NativeRegExp);
+  var index = 0;
+  while (keys.length > index) proxy(keys[index++]);
+  RegExpPrototype.constructor = RegExpWrapper;
+  RegExpWrapper.prototype = RegExpPrototype;
+  redefine(global, 'RegExp', RegExpWrapper);
+}
+
+// https://tc39.github.io/ecma262/#sec-get-regexp-@@species
+setSpecies('RegExp');
 
 
 /***/ }),
@@ -5397,7 +5507,7 @@ $({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
+exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item span.finder-highlight{padding:5px;color:#dc143c}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
 // Exports
 module.exports = exports;
 
@@ -6232,12 +6342,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=71c9958a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=4009c7a0&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[(_vm.currentFileData)?_vm._t("finder-file-detail",null,{"data":_vm.currentFileData}):_vm._e()],2)])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=71c9958a&
+// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=4009c7a0&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -6338,6 +6448,9 @@ var es_promise = __webpack_require__("e6cf");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.promise.finally.js
 var es_promise_finally = __webpack_require__("a79d");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
+var es_regexp_constructor = __webpack_require__("4d63");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__("ac1f");
@@ -6462,6 +6575,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
 
 
 
+
 /* harmony default export */ var finder = ((function () {
   var container;
   var options = {};
@@ -6489,6 +6603,8 @@ var es_typed_array_to_string = __webpack_require__("72f7");
 
   var setBaseData = function setBaseData(data) {
     if (!data || !data.length) {
+      __createNoData();
+
       throw new Error('Data invalid');
     }
 
@@ -6507,7 +6623,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     data.forEach(function (item, cellIndex) {
       var cell = __createCell(item, index);
 
-      if (index === 0 && cellIndex === 0) {
+      if (index === 0 && cellIndex === 0 || options.recursiveAll && cellIndex === 0 && item.type !== 'file') {
         cell.classList.add('active');
       }
 
@@ -6535,14 +6651,20 @@ var es_typed_array_to_string = __webpack_require__("72f7");
   }
 
   function __createCell(data, index) {
-    var label = data.label,
-        children = data.children,
+    var children = data.children,
         _data$syncData = data.syncData,
         syncData = _data$syncData === void 0 ? false : _data$syncData,
         type = data.type,
         suffix = data.suffix;
+    var label = data.label || '';
     var node = document.createElement('div');
     node.classList.add('finder-cell-item');
+
+    if (options.highlightFile && type === 'file') {
+      var regex = new RegExp(options.keyword);
+      label = label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>"));
+    }
+
     var content = "<div>".concat(label, "</div>");
 
     if (suffix) {
@@ -6648,9 +6770,53 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     return node;
   }
 
+  function __createNoData() {
+    var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    /** */
+    if (message && message.nodeType === Node.ELEMENT_NODE) {
+      container.appendChild(message);
+    } else {
+      var div = document.createElement('div');
+      div.style.padding = '10px';
+      div.innerText = message;
+      container.appendChild(div);
+    }
+  }
+  /** rerender with own custom */
+
+
+  function reRender(data) {
+    var customOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var _customOptions$noData = customOptions.noData,
+        noData = _customOptions$noData === void 0 ? 'No data specific!' : _customOptions$noData,
+        _customOptions$highli = customOptions.highlightFile,
+        highlightFile = _customOptions$highli === void 0 ? true : _customOptions$highli,
+        _customOptions$highli2 = customOptions.highlightFolder,
+        highlightFolder = _customOptions$highli2 === void 0 ? false : _customOptions$highli2,
+        _customOptions$keywor = customOptions.keyword,
+        keyword = _customOptions$keywor === void 0 ? '' : _customOptions$keywor;
+    container.innerHTML = '';
+
+    if (!data || data.length === 0) {
+      __createNoData(noData);
+    } else {
+      options = _objectSpread2(_objectSpread2({}, options), {}, {
+        recursiveAll: true,
+        highlightFile: highlightFile,
+        highlightFolder: highlightFolder,
+        keyword: keyword
+      });
+      setBaseData(data, true, true);
+    }
+
+    options.recursiveAll = false;
+  }
+
   return {
     init: init,
-    setBaseData: setBaseData
+    setBaseData: setBaseData,
+    reRender: reRender
   };
 })());
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=script&lang=js&
@@ -6718,6 +6884,13 @@ var es_typed_array_to_string = __webpack_require__("72f7");
 
     finder.init(container, initOptions);
     finder.setBaseData(this.tree);
+  },
+  methods: {
+    reRender: function reRender(data, keyword) {
+      finder.reRender(data, {
+        keyword: keyword
+      });
+    }
   }
 });
 // CONCATENATED MODULE: ./src/Finder.vue?vue&type=script&lang=js&

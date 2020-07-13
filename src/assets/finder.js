@@ -15,7 +15,6 @@ export default (function() {
     }
 
     /** create detail element */
-
     options = {
       ...baseConfig,
       ...initOptions,
@@ -24,6 +23,8 @@ export default (function() {
 
   const setBaseData = function(data) {
     if (!data || !data.length) {
+      __createNoData();
+
       throw new Error('Data invalid');
     }
 
@@ -38,9 +39,13 @@ export default (function() {
 
     data.forEach((item, cellIndex) => {
       const cell = __createCell(item, index);
-      if (index === 0 && cellIndex === 0) {
-        cell.classList.add('active');
+      if (
+        (index === 0 && cellIndex === 0) ||
+        (options.recursiveAll && cellIndex === 0 && item.type !== 'file')
+      ) {
+        cell.classList.add('active')
       }
+
       column.appendChild(cell);
     });
 
@@ -67,9 +72,15 @@ export default (function() {
   }
 
   function __createCell(data, index) {
-    const {label, children, syncData = false, type, suffix} = data;
+    const { children, syncData = false, type, suffix} = data;
+    let label = data.label || '';
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
+
+    if(options.highlightFile && type === 'file') {
+      const regex = new RegExp(options.keyword);
+      label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
+    }
     let content = `<div>${label}</div>`;
 
     if (suffix) {
@@ -168,8 +179,49 @@ export default (function() {
     return node;
   }
 
+  function __createNoData(message = null) {
+    /** */
+    if(message && message.nodeType === Node.ELEMENT_NODE) {
+      container.appendChild(message);
+    } else {
+      const div = document.createElement('div');
+      div.style.padding = '10px';
+      div.innerText = message;
+
+      container.appendChild(div)
+    }
+  }
+
+  /** rerender with own custom */
+  function reRender(data, customOptions = {}) {
+    const {
+      noData = 'No data specific!',
+      highlightFile = true,
+      highlightFolder = false,
+      keyword = ''
+    } = customOptions;
+
+    container.innerHTML = '';
+
+    if(!data || data.length === 0) {
+      __createNoData(noData);
+    } else {
+      options = {
+        ...options,
+        recursiveAll: true,
+        highlightFile,
+        highlightFolder,
+        keyword
+      };
+      setBaseData(data, true, true)
+    }
+
+    options.recursiveAll = false;
+  }
+
   return {
     init,
     setBaseData,
+    reRender
   };
 }());
