@@ -5516,7 +5516,7 @@ $({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item span.finder-highlight{padding:5px;color:#dc143c}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
+exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item span.finder-highlight{padding:5px 0;color:#dc143c}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}", ""]);
 // Exports
 module.exports = exports;
 
@@ -6670,8 +6670,10 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     node.classList.add('finder-cell-item');
 
     if (options.highlightFile && type === 'file' || options.highlightFolder && type === 'folder') {
-      var regex = new RegExp(options.keyword);
-      label = label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>"));
+      if (options.keyword) {
+        var regex = new RegExp(options.keyword, "ig");
+        label = label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>"));
+      }
     }
 
     var content = "<div>".concat(label, "</div>");
