@@ -82,8 +82,8 @@ export default (function() {
       (options.highlightFolder && type === 'folder')
     ) {
       if(options.keyword) {
-        const regex = new RegExp(options.keyword, "ig");
-        label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
+        // const regex = new RegExp(options.keyword, "ig");
+        // label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
       }
     }
     let content = `<div>${label}</div>`;
