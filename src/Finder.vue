@@ -56,6 +56,7 @@
     },
     methods: {
       reRender(data, options) {
+        this.showDetail = false;
         finder.reRender(data, options);
       }
     }
