@@ -1,6 +1,8 @@
 export default (function() {
   let container;
   let options = {};
+  let loadingElement;
+  let loading = false;
   const baseConfig = {
     recursiveAll: false,
     suffixClass: '',
@@ -13,6 +15,9 @@ export default (function() {
     if (initOptions.containerClass) {
       container.classList.add(initOptions.containerClass);
     }
+
+    /** init loading element */
+    loadingElement = document.getElementById('finder-loader');
 
     /** create detail element */
     options = {
@@ -32,7 +37,7 @@ export default (function() {
   };
 
   function __recursiveTree(
-    data, isVisible = false, recursiveAll = false, index = 0) {
+      data, isVisible = false, recursiveAll = false, index = 0) {
     const uuid = uuidv4();
     const column = __createColumn(uuid, isVisible);
     // finderTreeItem[index] = data;
@@ -40,8 +45,8 @@ export default (function() {
     data.forEach((item, cellIndex) => {
       const cell = __createCell(item, index);
       if (
-        (index === 0 && cellIndex === 0) ||
-        (options.recursiveAll && cellIndex === 0 && item.type !== 'file')
+          (index === 0 && cellIndex === 0) ||
+          (options.recursiveAll && cellIndex === 0 && item.type !== 'file')
       ) {
         cell.classList.add('active')
       }
@@ -55,15 +60,15 @@ export default (function() {
 
     /** check if first parent have children */
     if (recursiveAll && data[0].hasOwnProperty('children') &&
-      data[0].children.length) {
+        data[0].children.length) {
       __recursiveTree(data[0].children, true, options.recursiveAll, ++index);
     }
   }
 
   function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(
-        16),
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(
+            16),
     );
   }
 
@@ -78,8 +83,8 @@ export default (function() {
     node.classList.add('finder-cell-item');
 
     if(
-      (options.highlightFile && type === 'file') ||
-      (options.highlightFolder && type === 'folder')
+        (options.highlightFile && type === 'file') ||
+        (options.highlightFolder && type === 'folder')
     ) {
       if(options.keyword) {
         // const regex = new RegExp(options.keyword, "ig");
@@ -116,25 +121,50 @@ export default (function() {
         node.classList.add('active');
       }
 
-      /** remove right column from target column */
-      const columns = Array.from(container.children);
-      const targetIndex = columns.indexOf(node.parentNode);
-      columns.forEach((element, elementIndex) => {
-        if (elementIndex > targetIndex) {
-          element.remove();
-        }
-      });
-
       /** add children */
       if (options.hasOwnProperty('handleItemClick')) {
         if (syncData) {
+          if(loading) {
+            return alert('Dang loading nhe');
+          }
+          loading = true;
+          loadingElement.style.display = 'block';
           options.handleItemClick(data).then((data) => {
+            /** remove right column from target column */
+            const columns = Array.from(container.children);
+            const targetIndex = columns.indexOf(node.parentNode);
+            columns.forEach((element, elementIndex) => {
+              if (elementIndex > targetIndex) {
+                element.remove();
+              }
+            });
+
             __recursiveTree(data, true, false, ++index);
+          }).catch(() => {
+            /** remove right column from target column */
+            const columns = Array.from(container.children);
+            const targetIndex = columns.indexOf(node.parentNode);
+            columns.forEach((element, elementIndex) => {
+              if (elementIndex > targetIndex) {
+                element.remove();
+              }
+            });
           }).finally(() => {
             /** enable event click */
             node.style.pointerEvents = 'auto';
+            loading = false;
+            loadingElement.style.display = 'none';
           });
         } else {
+          /** remove right column from target column */
+          const columns = Array.from(container.children);
+          const targetIndex = columns.indexOf(node.parentNode);
+          columns.forEach((element, elementIndex) => {
+            if (elementIndex > targetIndex) {
+              element.remove();
+            }
+          });
+
           if(data.options || type === 'file') {
             options.handleItemClick(data).finally(() => {
               node.style.pointerEvents = 'auto';
