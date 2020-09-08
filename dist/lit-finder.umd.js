@@ -6571,7 +6571,8 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     var content = "<div>".concat(label, "</div>");
 
     if (suffix) {
-      content += "<span class=\"".concat(options.suffixClass, " ").concat(suffixClass, "\">").concat(suffix, "</span>");
+      var finalClass = suffixClass || options.suffixClass;
+      content += "<span class=\"".concat(finalClass, "\">").concat(suffix, "</span>");
     }
 
     if (type === 'folder') {

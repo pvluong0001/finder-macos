@@ -94,7 +94,8 @@ export default (function() {
     let content = `<div>${label}</div>`;
 
     if (suffix) {
-      content += `<span class="${options.suffixClass} ${suffixClass}">${suffix}</span>`;
+      const finalClass = suffixClass || options.suffixClass;
+      content += `<span class="${finalClass}">${suffix}</span>`;
     }
     if (type === 'folder') {
       node.className += ' folder las la-folder';
