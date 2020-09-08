@@ -5397,7 +5397,7 @@ $({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item span.finder-highlight{padding:5px 0;color:#dc143c}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2;position:relative}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}#finder-loader{position:absolute;width:100%;height:100%;cursor:not-allowed;display:none;z-index:2;top:0;left:0;background:hsla(0,0%,94.5%,.5)}.loader{border:3px solid #fff;border-top:3px solid #000;position:absolute;top:calc(50% - 15px);left:calc(50% - 15px);border-radius:50%;width:30px;height:30px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite}@-webkit-keyframes spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}", ""]);
+exports.push([module.i, ".finder-container{display:flex;overflow-x:auto}.finder-container .finder-column{border-right:1px dotted #c2c2c2}.finder-container .finder-column .finder-cell-item{padding:10px 20px;border-bottom:1px dotted #c2c2c2;cursor:pointer;display:flex;font-weight:400;align-items:stretch;min-height:41px}.finder-container .finder-column .finder-cell-item .arrow{display:inline-block;border-right:3px solid #000;border-bottom:3px solid #000;width:6px;height:6px;transform:rotate(-45deg)}.finder-container .finder-column .finder-cell-item span.finder-highlight{padding:5px 0;color:#dc143c}.finder-container .finder-column .finder-cell-item div{flex:1;padding-left:10px}.finder-container .finder-column .finder-cell-item span{align-self:center}.finder-container .finder-column .finder-cell-item.active{background:#1a79d0;color:#fff}.finder-container .finder-column .finder-cell-item.active .arrow{border-right:3px solid #fff;border-bottom:3px solid #fff}.finder-container .finder-column-hidden{display:none}.finder-wrapper{display:flex;border:1px dotted #c2c2c2;position:relative}.finder-wrapper .finder-root{flex:1}.finder-wrapper .finder-detail-wrapper{width:50%;transition:.1s;border-left:1px dotted #c2c2c2}#finder-loader{position:absolute;width:100%;height:100%;cursor:pointer;display:none;z-index:2;top:0;left:0;background:hsla(0,0%,94.5%,.5)}.loader{border:3px solid #fff;border-top:3px solid #000;position:absolute;top:calc(50% - 15px);left:calc(50% - 15px);border-radius:50%;width:30px;height:30px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite}@-webkit-keyframes spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}", ""]);
 // Exports
 module.exports = exports;
 
@@ -6232,12 +6232,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=b85d72da&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2fc10428-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=c19db3bc&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"main-wrapper",staticStyle:{"position":"relative"}},[_vm._m(0),_c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[(_vm.currentFileData)?_vm._t("finder-file-detail",null,{"data":_vm.currentFileData}):_vm._e()],2)])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"finder-loader"}},[_c('div',{staticClass:"loader"})])}]
 
 
-// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=b85d72da&
+// CONCATENATED MODULE: ./src/Finder.vue?vue&type=template&id=c19db3bc&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -6546,7 +6546,9 @@ var es_typed_array_to_string = __webpack_require__("72f7");
         _data$syncData = data.syncData,
         syncData = _data$syncData === void 0 ? false : _data$syncData,
         type = data.type,
-        suffix = data.suffix;
+        suffix = data.suffix,
+        _data$suffixClass = data.suffixClass,
+        suffixClass = _data$suffixClass === void 0 ? '' : _data$suffixClass;
     var label = data.label || '';
     var node = document.createElement('div');
     node.classList.add('finder-cell-item');
@@ -6560,7 +6562,7 @@ var es_typed_array_to_string = __webpack_require__("72f7");
     var content = "<div>".concat(label, "</div>");
 
     if (suffix) {
-      content += "<span class=\"".concat(options.suffixClass, "\">").concat(suffix, "</span>");
+      content += "<span class=\"".concat(options.suffixClass, " ").concat(suffixClass, "\">").concat(suffix, "</span>");
     }
 
     if (type === 'folder') {
