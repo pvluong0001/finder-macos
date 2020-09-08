@@ -77,7 +77,7 @@ export default (function() {
   }
 
   function __createCell(data, index) {
-    const { children, syncData = false, type, suffix} = data;
+    const { children, syncData = false, type, suffix, suffixClass = ''} = data;
     let label = data.label || '';
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
@@ -94,7 +94,7 @@ export default (function() {
     let content = `<div>${label}</div>`;
 
     if (suffix) {
-      content += `<span class="${options.suffixClass}">${suffix}</span>`;
+      content += `<span class="${options.suffixClass} ${suffixClass}">${suffix}</span>`;
     }
     if (type === 'folder') {
       node.className += ' folder las la-folder';

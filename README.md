@@ -71,13 +71,14 @@ export default {
 | options         | Object   | {}      | Init finder options(detail below)  |
 
 ### Node properties
-| Key      | Type         | Default value |                                                          |
-|----------|---------     |---------------|----------------------------------------------------------|
-| label    | String       | required      | Name of node                                             |
-| type     | String       | require       | folder,file: show node with type file or folder and css  |
-| children | Array        | []            | Children node                                            |
-| suffix   | String,Number| ''            | suffix content                                           |
-| syncData | Boolean      | false         | if true: define handleItemClick function to handle       |
+| Key         | Type          | Default value |                                                         |
+|-------------|---------------|---------------|---------------------------------------------------------|
+| label       | String        | required      | Name of node                                            |
+| type        | String        | require       | folder,file: show node with type file or folder and css |
+| children    | Array         | []            | Children node                                           |
+| suffix      | String,Number | ''            | suffix content                                          |
+| syncData    | Boolean       | false         | if true: define handleItemClick function to handle      |
+| suffixClass | String        | ''            | style for suffix content                                |
 
 ### Init options
 | Key             | Type     | Default value |                                                         |

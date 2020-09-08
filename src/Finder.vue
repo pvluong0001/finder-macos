@@ -91,7 +91,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  cursor: not-allowed;
+  cursor: pointer;
   display: none;
   z-index: 2;
   top: 0;
