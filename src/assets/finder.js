@@ -1,4 +1,4 @@
-export default (function() {
+export default (function () {
   let container;
   let options = {};
   let loadingElement;
@@ -8,7 +8,7 @@ export default (function() {
     suffixClass: '',
     columnWidth: '250px',
   };
-  const init = function(element, initOptions = {}) {
+  const init = function (element, initOptions = {}) {
     /** create list container */
     container = element;
     container.classList.add('finder-container');
@@ -26,7 +26,7 @@ export default (function() {
     };
   };
 
-  const setBaseData = function(data) {
+  const setBaseData = function (data) {
     if (!data || !data.length) {
       __createNoData();
 
@@ -37,7 +37,8 @@ export default (function() {
   };
 
   function __recursiveTree(
-      data, isVisible = false, recursiveAll = false, index = 0) {
+      data, isVisible = false, recursiveAll = false, index = 0,
+  ) {
     const uuid = uuidv4();
     const column = __createColumn(uuid, isVisible);
     // finderTreeItem[index] = data;
@@ -45,10 +46,10 @@ export default (function() {
     data.forEach((item, cellIndex) => {
       const cell = __createCell(item, index);
       if (
-          (index === 0 && cellIndex === 0) ||
-          (options.recursiveAll && cellIndex === 0 && item.type !== 'file')
+          (index === 0 && cellIndex === 0)
+          || (options.recursiveAll && cellIndex === 0 && item.type !== 'file')
       ) {
-        cell.classList.add('active')
+        cell.classList.add('active');
       }
 
       column.appendChild(cell);
@@ -59,17 +60,16 @@ export default (function() {
     container.scrollLeft += 1000;
 
     /** check if first parent have children */
-    if (recursiveAll && data[0].hasOwnProperty('children') &&
-        data[0].children.length) {
+    if (recursiveAll && data[0].hasOwnProperty('children')
+        && data[0].children.length) {
       __recursiveTree(data[0].children, true, options.recursiveAll, ++index);
     }
   }
 
   function uuidv4() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(
-            16),
-    );
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(
+        16,
+    ));
   }
 
   function isFunction(functionToCheck) {
@@ -77,16 +77,18 @@ export default (function() {
   }
 
   function __createCell(data, index) {
-    const { children, syncData = false, type, suffix, suffixClass = ''} = data;
-    let label = data.label || '';
+    const {
+      children, syncData = false, type, suffix, suffixClass = '',
+    } = data;
+    const label = data.label || '';
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
 
-    if(
-        (options.highlightFile && type === 'file') ||
-        (options.highlightFolder && type === 'folder')
+    if (
+        (options.highlightFile && type === 'file')
+        || (options.highlightFolder && type === 'folder')
     ) {
-      if(options.keyword) {
+      if (options.keyword) {
         // const regex = new RegExp(options.keyword, "ig");
         // label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
       }
@@ -122,18 +124,20 @@ export default (function() {
         node.classList.add('active');
       }
 
+      const columns = Array.from(container.children);
+      const targetIndex = columns.indexOf(node.parentNode);
+
       /** add children */
       if (options.hasOwnProperty('handleItemClick')) {
         if (syncData) {
-          if(loading) {
+          if (loading) {
             return alert('Dang loading nhe');
           }
           loading = true;
           loadingElement.style.display = 'block';
-          options.handleItemClick(data).then((data) => {
+
+          options.handleItemClick(data, targetIndex).then((data) => {
             /** remove right column from target column */
-            const columns = Array.from(container.children);
-            const targetIndex = columns.indexOf(node.parentNode);
             columns.forEach((element, elementIndex) => {
               if (elementIndex > targetIndex) {
                 element.remove();
@@ -143,8 +147,6 @@ export default (function() {
             __recursiveTree(data, true, false, ++index);
           }).catch(() => {
             /** remove right column from target column */
-            const columns = Array.from(container.children);
-            const targetIndex = columns.indexOf(node.parentNode);
             columns.forEach((element, elementIndex) => {
               if (elementIndex > targetIndex) {
                 element.remove();
@@ -158,26 +160,24 @@ export default (function() {
           });
         } else {
           /** remove right column from target column */
-          const columns = Array.from(container.children);
-          const targetIndex = columns.indexOf(node.parentNode);
           columns.forEach((element, elementIndex) => {
             if (elementIndex > targetIndex) {
               element.remove();
             }
           });
 
-          if(data.options || type === 'file') {
-            options.handleItemClick(data).finally(() => {
+          if (data.options || type === 'file') {
+            options.handleItemClick(data, targetIndex).finally(() => {
               node.style.pointerEvents = 'auto';
-            })
+            });
           }
-          if(data.children && data.children.length) {
+          if (data.children && data.children.length) {
             __recursiveTree(children, true, false, ++index);
             try {
-              if(isFunction(options.handleItemClick)) {
-                options.handleItemClick(data).finally(() => {
+              if (isFunction(options.handleItemClick)) {
+                options.handleItemClick(data, targetIndex).finally(() => {
                   node.style.pointerEvents = 'auto';
-                })
+                });
               }
             } catch (e) {
               /** enable event click */
@@ -202,7 +202,7 @@ export default (function() {
   }
 
   function __createColumn(id, visible = false) {
-    var node = document.createElement('div');
+    const node = document.createElement('div');
     node.id = id;
     node.style.width = options.columnWidth;
     node.style.minWidth = options.columnWidth;
@@ -217,14 +217,14 @@ export default (function() {
 
   function __createNoData(message = null) {
     /** */
-    if(message && message.nodeType === Node.ELEMENT_NODE) {
+    if (message && message.nodeType === Node.ELEMENT_NODE) {
       container.appendChild(message);
     } else {
       const div = document.createElement('div');
       div.style.padding = '10px';
       div.innerText = message;
 
-      container.appendChild(div)
+      container.appendChild(div);
     }
   }
 
@@ -234,12 +234,12 @@ export default (function() {
       noData = 'No data specific!',
       highlightFile = true,
       highlightFolder = false,
-      keyword = ''
+      keyword = '',
     } = customOptions;
 
     container.innerHTML = '';
 
-    if(!data || data.length === 0) {
+    if (!data || data.length === 0) {
       __createNoData(noData);
     } else {
       options = {
@@ -247,9 +247,9 @@ export default (function() {
         recursiveAll: true,
         highlightFile,
         highlightFolder,
-        keyword
+        keyword,
       };
-      setBaseData(data, true, true)
+      setBaseData(data, true, true);
     }
 
     options.recursiveAll = false;
@@ -258,6 +258,6 @@ export default (function() {
   return {
     init,
     setBaseData,
-    reRender
+    reRender,
   };
 }());

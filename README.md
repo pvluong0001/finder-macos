@@ -64,11 +64,11 @@ export default {
 ```
 
 ### Props
-| Name            | Type     | Default |                                    |
-|-----------------|----------|---------|------------------------------------|
-| tree            | Array    | []      | Base data of finder. Array of node |
-| handleItemClick | Function | null    | Handle event when click on node    |
-| options         | Object   | {}      | Init finder options(detail below)  |
+| Name            | Type     | Default |                                                                              |
+|-----------------|----------|---------|------------------------------------------------------------------------------|
+| tree            | Array    | []      | Base data of finder. Array of node                                           |
+| handleItemClick | Function | null    | Handle event when click on node(have two params includes: nodeData, options) |
+| options         | Object   | {}      | Init finder options(detail below)                                            |
 
 ### Node properties
 | Key         | Type          | Default value |                                                         |

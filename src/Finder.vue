@@ -40,7 +40,7 @@ export default {
     const initOptions = {...this.options};
 
     if (this.handleItemClick) {
-      initOptions.handleItemClick = (node) => {
+      initOptions.handleItemClick = (node, columnIndex) => {
         this.showDetail = node.type === 'file';
         if (this.showDetail) {
           this.$nextTick().then(() => {
@@ -52,7 +52,9 @@ export default {
           this.currentFileData = node;
         }
 
-        return this.handleItemClick(node);
+        return this.handleItemClick(node, {
+          columnIndex
+        });
       }
     }
 
