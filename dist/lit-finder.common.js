@@ -1557,25 +1557,6 @@ module.exports = function (a, b) {
 
 /***/ }),
 
-/***/ "44e7":
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__("861d");
-var classof = __webpack_require__("c6b6");
-var wellKnownSymbol = __webpack_require__("b622");
-
-var MATCH = wellKnownSymbol('match');
-
-// `IsRegExp` abstract operation
-// https://tc39.es/ecma262/#sec-isregexp
-module.exports = function (it) {
-  var isRegExp;
-  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) == 'RegExp');
-};
-
-
-/***/ }),
-
 /***/ "4840":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1896,202 +1877,6 @@ function applyToTag (styleElement, obj) {
     styleElement.appendChild(document.createTextNode(css))
   }
 }
-
-
-/***/ }),
-
-/***/ "4d63":
-/***/ (function(module, exports, __webpack_require__) {
-
-var DESCRIPTORS = __webpack_require__("83ab");
-var global = __webpack_require__("da84");
-var isForced = __webpack_require__("94ca");
-var inheritIfRequired = __webpack_require__("7156");
-var createNonEnumerableProperty = __webpack_require__("9112");
-var defineProperty = __webpack_require__("9bf2").f;
-var getOwnPropertyNames = __webpack_require__("241c").f;
-var isRegExp = __webpack_require__("44e7");
-var toString = __webpack_require__("577e");
-var getFlags = __webpack_require__("ad6d");
-var stickyHelpers = __webpack_require__("9f7f");
-var redefine = __webpack_require__("6eeb");
-var fails = __webpack_require__("d039");
-var has = __webpack_require__("5135");
-var enforceInternalState = __webpack_require__("69f3").enforce;
-var setSpecies = __webpack_require__("2626");
-var wellKnownSymbol = __webpack_require__("b622");
-var UNSUPPORTED_DOT_ALL = __webpack_require__("fce3");
-var UNSUPPORTED_NCG = __webpack_require__("107c");
-
-var MATCH = wellKnownSymbol('match');
-var NativeRegExp = global.RegExp;
-var RegExpPrototype = NativeRegExp.prototype;
-// TODO: Use only propper RegExpIdentifierName
-var IS_NCG = /^\?<[^\s\d!#%&*+<=>@^][^\s!#%&*+<=>@^]*>/;
-var re1 = /a/g;
-var re2 = /a/g;
-
-// "new" should create a new object, old webkit bug
-var CORRECT_NEW = new NativeRegExp(re1) !== re1;
-
-var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y;
-
-var BASE_FORCED = DESCRIPTORS &&
-  (!CORRECT_NEW || UNSUPPORTED_Y || UNSUPPORTED_DOT_ALL || UNSUPPORTED_NCG || fails(function () {
-    re2[MATCH] = false;
-    // RegExp constructor can alter flags and IsRegExp works correct with @@match
-    return NativeRegExp(re1) != re1 || NativeRegExp(re2) == re2 || NativeRegExp(re1, 'i') != '/a/i';
-  }));
-
-var handleDotAll = function (string) {
-  var length = string.length;
-  var index = 0;
-  var result = '';
-  var brackets = false;
-  var chr;
-  for (; index <= length; index++) {
-    chr = string.charAt(index);
-    if (chr === '\\') {
-      result += chr + string.charAt(++index);
-      continue;
-    }
-    if (!brackets && chr === '.') {
-      result += '[\\s\\S]';
-    } else {
-      if (chr === '[') {
-        brackets = true;
-      } else if (chr === ']') {
-        brackets = false;
-      } result += chr;
-    }
-  } return result;
-};
-
-var handleNCG = function (string) {
-  var length = string.length;
-  var index = 0;
-  var result = '';
-  var named = [];
-  var names = {};
-  var brackets = false;
-  var ncg = false;
-  var groupid = 0;
-  var groupname = '';
-  var chr;
-  for (; index <= length; index++) {
-    chr = string.charAt(index);
-    if (chr === '\\') {
-      chr = chr + string.charAt(++index);
-    } else if (chr === ']') {
-      brackets = false;
-    } else if (!brackets) switch (true) {
-      case chr === '[':
-        brackets = true;
-        break;
-      case chr === '(':
-        if (IS_NCG.test(string.slice(index + 1))) {
-          index += 2;
-          ncg = true;
-        }
-        result += chr;
-        groupid++;
-        continue;
-      case chr === '>' && ncg:
-        if (groupname === '' || has(names, groupname)) {
-          throw new SyntaxError('Invalid capture group name');
-        }
-        names[groupname] = true;
-        named.push([groupname, groupid]);
-        ncg = false;
-        groupname = '';
-        continue;
-    }
-    if (ncg) groupname += chr;
-    else result += chr;
-  } return [result, named];
-};
-
-// `RegExp` constructor
-// https://tc39.es/ecma262/#sec-regexp-constructor
-if (isForced('RegExp', BASE_FORCED)) {
-  var RegExpWrapper = function RegExp(pattern, flags) {
-    var thisIsRegExp = this instanceof RegExpWrapper;
-    var patternIsRegExp = isRegExp(pattern);
-    var flagsAreUndefined = flags === undefined;
-    var groups = [];
-    var rawPattern = pattern;
-    var rawFlags, dotAll, sticky, handled, result, state;
-
-    if (!thisIsRegExp && patternIsRegExp && flagsAreUndefined && pattern.constructor === RegExpWrapper) {
-      return pattern;
-    }
-
-    if (patternIsRegExp || pattern instanceof RegExpWrapper) {
-      pattern = pattern.source;
-      if (flagsAreUndefined) flags = 'flags' in rawPattern ? rawPattern.flags : getFlags.call(rawPattern);
-    }
-
-    pattern = pattern === undefined ? '' : toString(pattern);
-    flags = flags === undefined ? '' : toString(flags);
-    rawPattern = pattern;
-
-    if (UNSUPPORTED_DOT_ALL && 'dotAll' in re1) {
-      dotAll = !!flags && flags.indexOf('s') > -1;
-      if (dotAll) flags = flags.replace(/s/g, '');
-    }
-
-    rawFlags = flags;
-
-    if (UNSUPPORTED_Y && 'sticky' in re1) {
-      sticky = !!flags && flags.indexOf('y') > -1;
-      if (sticky) flags = flags.replace(/y/g, '');
-    }
-
-    if (UNSUPPORTED_NCG) {
-      handled = handleNCG(pattern);
-      pattern = handled[0];
-      groups = handled[1];
-    }
-
-    result = inheritIfRequired(NativeRegExp(pattern, flags), thisIsRegExp ? this : RegExpPrototype, RegExpWrapper);
-
-    if (dotAll || sticky || groups.length) {
-      state = enforceInternalState(result);
-      if (dotAll) {
-        state.dotAll = true;
-        state.raw = RegExpWrapper(handleDotAll(pattern), rawFlags);
-      }
-      if (sticky) state.sticky = true;
-      if (groups.length) state.groups = groups;
-    }
-
-    if (pattern !== rawPattern) try {
-      // fails in old engines, but we have no alternatives for unsupported regex syntax
-      createNonEnumerableProperty(result, 'source', rawPattern === '' ? '(?:)' : rawPattern);
-    } catch (error) { /* empty */ }
-
-    return result;
-  };
-
-  var proxy = function (key) {
-    key in RegExpWrapper || defineProperty(RegExpWrapper, key, {
-      configurable: true,
-      get: function () { return NativeRegExp[key]; },
-      set: function (it) { NativeRegExp[key] = it; }
-    });
-  };
-
-  for (var keys = getOwnPropertyNames(NativeRegExp), index = 0; keys.length > index;) {
-    proxy(keys[index++]);
-  }
-
-  RegExpPrototype.constructor = RegExpWrapper;
-  RegExpWrapper.prototype = RegExpPrototype;
-  redefine(global, 'RegExp', RegExpWrapper);
-}
-
-// https://tc39.es/ecma262/#sec-get-regexp-@@species
-setSpecies('RegExp');
 
 
 /***/ }),
@@ -6899,7 +6684,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"357ffe30-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=22227b72&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"33a58060-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=22227b72&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"main-wrapper",staticStyle:{"position":"relative"}},[_vm._m(0),_c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[(_vm.currentFileData)?_vm._t("finder-file-detail",null,{"data":_vm.currentFileData}):_vm._e()],2)])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"finder-loader"}},[_c('div',{staticClass:"loader"})])}]
 
@@ -7072,9 +6857,6 @@ var es_typed_array_to_locale_string = __webpack_require__("b39a");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.typed-array.to-string.js
 var es_typed_array_to_string = __webpack_require__("72f7");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
-var es_regexp_constructor = __webpack_require__("4d63");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
 
@@ -7091,7 +6873,6 @@ var es_promise = __webpack_require__("e6cf");
 var es_promise_finally = __webpack_require__("a79d");
 
 // CONCATENATED MODULE: ./src/assets/finder.js
-
 
 
 
@@ -7220,9 +7001,8 @@ var es_promise_finally = __webpack_require__("a79d");
     node.classList.add('finder-cell-item');
 
     if (options.highlightFile && type === 'file' || options.highlightFolder && type === 'folder') {
-      if (options.keyword) {
-        var regex = new RegExp(options.keyword, "ig");
-        label = label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>"));
+      if (options.keyword) {// const regex = new RegExp(options.keyword, "ig");
+        // label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
       }
     }
 
@@ -7230,7 +7010,7 @@ var es_promise_finally = __webpack_require__("a79d");
 
     if (suffix) {
       var finalClass = suffixClass || options.suffixClass;
-      content += "<span class=\"".concat(finalClass, "\">").concat(suffix, "</span>");
+      content += "<span class=\"".concat(finalClass, " ").concat(parseInt(suffix) > 0 ? 'unsigned' : '', "\">").concat(suffix, "</span>");
     }
 
     if (type === 'folder') {

@@ -89,15 +89,15 @@ export default (function () {
         || (options.highlightFolder && type === 'folder')
     ) {
       if (options.keyword) {
-        const regex = new RegExp(options.keyword, "ig");
-        label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
+        // const regex = new RegExp(options.keyword, "ig");
+        // label = label.replace(regex, `<span class="${options.highlightClass || 'finder-highlight'}">${options.keyword}</span>`)
       }
     }
     let content = `<div>${label}</div>`;
 
     if (suffix) {
       const finalClass = suffixClass || options.suffixClass;
-      content += `<span class="${finalClass}">${suffix}</span>`;
+      content += `<span class="${finalClass} ${parseInt(suffix) > 0 ? 'unsigned' : ''}">${suffix}</span>`;
     }
     if (type === 'folder') {
       node.className += ' folder las la-folder';
