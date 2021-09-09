@@ -80,7 +80,7 @@ export default (function () {
     const {
       children, syncData = false, type, suffix, suffixClass = '',
     } = data;
-    const label = data.label || '';
+    let label = data.label || '';
     const node = document.createElement('div');
     node.classList.add('finder-cell-item');
 

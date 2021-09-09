@@ -6899,7 +6899,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"04926281-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=22227b72&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"357ffe30-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/Finder.vue?vue&type=template&id=22227b72&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"main-wrapper",staticStyle:{"position":"relative"}},[_vm._m(0),_c('div',{class:("finder-wrapper " + (_vm.options.wrapperClass))},[_c('div',{staticClass:"finder-root"}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDetail),expression:"showDetail"}],staticClass:"finder-detail-wrapper",style:({width: _vm.showDetail ? '50%' : 0})},[(_vm.currentFileData)?_vm._t("finder-file-detail",null,{"data":_vm.currentFileData}):_vm._e()],2)])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"finder-loader"}},[_c('div',{staticClass:"loader"})])}]
 
@@ -6984,10 +6984,6 @@ function _objectSpread2(target) {
   }
 
   return target;
-}
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/readOnlyError.js
-function _readOnlyError(name) {
-  throw new TypeError("\"" + name + "\" is read-only");
 }
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__("ac1f");
@@ -7132,7 +7128,6 @@ var es_promise_finally = __webpack_require__("a79d");
 
 
 
-
 /* harmony default export */ var finder = ((function () {
   var container;
   var options = {};
@@ -7227,7 +7222,7 @@ var es_promise_finally = __webpack_require__("a79d");
     if (options.highlightFile && type === 'file' || options.highlightFolder && type === 'folder') {
       if (options.keyword) {
         var regex = new RegExp(options.keyword, "ig");
-        label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>")), _readOnlyError("label");
+        label = label.replace(regex, "<span class=\"".concat(options.highlightClass || 'finder-highlight', "\">").concat(options.keyword, "</span>"));
       }
     }
 
